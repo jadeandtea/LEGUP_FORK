@@ -6,14 +6,10 @@ import edu.rpi.legup.model.gameboard.PuzzleElement;
 import edu.rpi.legup.model.rules.CaseRule;
 import edu.rpi.legup.model.tree.TreeTransition;
 import edu.rpi.legup.puzzle.skyscrapers.*;
-import org.apache.commons.lang3.ObjectUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class CellForNumberCaseRule extends CaseRule {
     public CellForNumberCaseRule() {
@@ -104,7 +100,7 @@ public class CellForNumberCaseRule extends CaseRule {
         }
 
         //find changed row/col
-        SkyscrapersClue modClue = ((SkyscrapersBoard) childTransitions.get(0).getBoard()).getmodClue();
+        SkyscrapersClue modClue = ((SkyscrapersBoard) childTransitions.get(0).getBoard()).getModClue();
 
         //System.out.println(modClue.getType());
         //System.out.println(modClue.getClueIndex());

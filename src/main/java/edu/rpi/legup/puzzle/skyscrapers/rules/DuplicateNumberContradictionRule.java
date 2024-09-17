@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DuplicateNumberContradictionRule extends ContradictionRule {
+    private final String NO_CONTRADICTION_MESSAGE = "Does not contain a contradiction at this index";
 
     public DuplicateNumberContradictionRule() {
         super("SKYS-CONT-0001", "Duplicate Number",
@@ -33,15 +34,13 @@ public class DuplicateNumberContradictionRule extends ContradictionRule {
         SkyscrapersBoard skyscrapersboard = (SkyscrapersBoard) board;
         Point loc = cell.getLocation();
 
-        Set<Integer> candidates = new HashSet<Integer>();
-
         //check row
         for (int i = 0; i < skyscrapersboard.getWidth(); i++) {
             SkyscrapersCell c = skyscrapersboard.getCell(i, loc.y);
             if (i != loc.x && cell.getType() == SkyscrapersType.Number && c.getType() == SkyscrapersType.Number && c.getData() == cell.getData()) {
                 //System.out.print(c.getData());
                 //System.out.println(cell.getData());
-                return null;
+                return super.getNoContradictionMessage() + ": " + this.NO_CONTRADICTION_MESSAGE;
             }
         }
 
@@ -51,7 +50,7 @@ public class DuplicateNumberContradictionRule extends ContradictionRule {
             if (i != loc.y && cell.getType() == SkyscrapersType.Number && c.getType() == SkyscrapersType.Number && c.getData() == cell.getData()) {
                 //System.out.print(c.getData());
                 //System.out.println(cell.getData());
-                return null;
+                return super.getNoContradictionMessage() + ": " + this.NO_CONTRADICTION_MESSAGE;
             }
         }
 

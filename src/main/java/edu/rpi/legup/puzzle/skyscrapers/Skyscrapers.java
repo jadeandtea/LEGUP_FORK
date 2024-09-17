@@ -46,8 +46,8 @@ public class Skyscrapers extends Puzzle {
      * @return true if the given dimensions are valid for Skyscrapers, false otherwise
      */
     public boolean isValidDimensions(int rows, int columns) {
-        // This is a placeholder, this method needs to be implemented
-        throw new UnsupportedOperationException();
+        // The board must be an n x n square at least of size 4 x 4
+        return columns >= 4 && rows == columns;
     }
 
     /**

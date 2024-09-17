@@ -32,7 +32,9 @@ public class SkyscrapersImporter extends PuzzleImporter {
      */
     @Override
     public void initializeBoard(int rows, int columns) {
+        SkyscrapersBoard skyscrapersBoard = new SkyscrapersBoard(rows);
 
+        puzzle.setCurrentBoard(skyscrapersBoard);
     }
 
     /**
@@ -98,11 +100,13 @@ public class SkyscrapersImporter extends PuzzleImporter {
             Element axis1 = (Element) axes.item(0);
             Element axis2 = (Element) axes.item(1);
 
-            if (!axis1.hasAttribute("side") || !axis1.hasAttribute("side")) {
+            if (!axis1.hasAttribute("side") || !axis2.hasAttribute("side")) {
                 throw new InvalidFileFormatException("Skyscraper Importer: side attribute of axis not specified");
             }
             String side1 = axis1.getAttribute("side");
             String side2 = axis2.getAttribute("side");
+
+            // Think this if statement doesn't work properly
             if (side1.equalsIgnoreCase(side2) || !(side1.equalsIgnoreCase("east") || side1.equalsIgnoreCase("south")) ||
                     !(side2.equalsIgnoreCase("east") || side2.equalsIgnoreCase("south"))) {
                 throw new InvalidFileFormatException("Skyscraper Importer: axes must be different and be {east | south}");
@@ -113,12 +117,14 @@ public class SkyscrapersImporter extends PuzzleImporter {
             if (eastClues.getLength() != skyscrapersBoard.getHeight() || southClues.getLength() != skyscrapersBoard.getWidth()) {
                 throw new InvalidFileFormatException("Skyscraper Importer: there must be same number of clues as the dimension of the board");
             }
+            // Are the clues for west stored as the "index" value in the east clues??
+            // And the clues for North stored in the south clues??
 
             for (int i = 0; i < eastClues.getLength(); i++) {
                 Element clue = (Element) eastClues.item(i);
-                int value = Integer.valueOf(clue.getAttribute("value"));
+                int value = Integer.parseInt(clue.getAttribute("value"));
                 //int index = SkyscrapersClue.colStringToColNum(clue.getAttribute("index"));
-                int index = Integer.valueOf(clue.getAttribute("index"));
+                int index = Integer.parseInt(clue.getAttribute("index"));
 
                 skyscrapersBoard.getWestClues().set(/*index - 1*/i, new SkyscrapersClue(index, i, SkyscrapersType.CLUE_WEST));
                 skyscrapersBoard.getEastClues().set(/*index - 1*/i, new SkyscrapersClue(value, i, SkyscrapersType.CLUE_EAST));
@@ -126,14 +132,15 @@ public class SkyscrapersImporter extends PuzzleImporter {
 
             for (int i = 0; i < southClues.getLength(); i++) {
                 Element clue = (Element) southClues.item(i);
-                int value = Integer.valueOf(clue.getAttribute("value"));
-                int index = Integer.valueOf(clue.getAttribute("index"));
+                int value = Integer.parseInt(clue.getAttribute("value"));
+                int index = Integer.parseInt(clue.getAttribute("index"));
 
 
                 skyscrapersBoard.getNorthClues().set(/*index - 1*/i, new SkyscrapersClue(index, i, SkyscrapersType.CLUE_NORTH));
                 skyscrapersBoard.getSouthClues().set(/*index - 1*/i, new SkyscrapersClue(value, i, SkyscrapersType.CLUE_SOUTH));
             }
 
+            // Not sure what this does
             if (boardElement.getElementsByTagName("lines").getLength() == 1) {
                 Element linesElement = (Element) boardElement.getElementsByTagName("lines").item(0);
                 NodeList linesList = linesElement.getElementsByTagName("line");

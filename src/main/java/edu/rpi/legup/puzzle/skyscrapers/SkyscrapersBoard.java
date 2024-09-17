@@ -94,7 +94,7 @@ public class SkyscrapersBoard extends GridBoard {
         viewFlag = newFlag;
     }
 
-    public SkyscrapersClue getmodClue() {
+    public SkyscrapersClue getModClue() {
         return modClue;
     }
 

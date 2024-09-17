@@ -22,25 +22,23 @@ public class SkyscrapersCellFactory extends ElementFactory {
     @Override
     public PuzzleElement importCell(Node node, Board board) throws InvalidFileFormatException {
         try {
-            //SkyscrapersBoard treeTentBoard = (SkyscrapersBoard) board;
             SkyscrapersBoard skyscrapersBoard = (SkyscrapersBoard) board;
-            int width = skyscrapersBoard.getWidth();
-            int height = skyscrapersBoard.getHeight();
+            int size = skyscrapersBoard.getWidth();
             NamedNodeMap attributeList = node.getAttributes();
             if (node.getNodeName().equalsIgnoreCase("cell")) {
 
                 int value = Integer.valueOf(attributeList.getNamedItem("value").getNodeValue());
                 int x = Integer.valueOf(attributeList.getNamedItem("x").getNodeValue());
                 int y = Integer.valueOf(attributeList.getNamedItem("y").getNodeValue());
-                if (x >= width || y >= height) {
+                if (x >= size || y >= size) {
                     throw new InvalidFileFormatException("TreeTent Factory: cell location out of bounds");
                 }
                 if (value < 0) {
                     throw new InvalidFileFormatException("TreeTent Factory: cell unknown value");
                 }
 
-                SkyscrapersCell cell = new SkyscrapersCell(value, new Point(x, y), width);
-                cell.setIndex(y * height + x);
+                SkyscrapersCell cell = new SkyscrapersCell(value, new Point(x, y), size);
+                cell.setIndex(y * size + x);
                 return cell;
             }
             else {
@@ -49,7 +47,7 @@ public class SkyscrapersCellFactory extends ElementFactory {
                     int y1 = Integer.valueOf(attributeList.getNamedItem("y1").getNodeValue());
                     int x2 = Integer.valueOf(attributeList.getNamedItem("x2").getNodeValue());
                     int y2 = Integer.valueOf(attributeList.getNamedItem("y2").getNodeValue());
-                    if (x1 >= width || y1 >= height || x2 >= width || y2 >= height) {
+                    if (x1 >= size || y1 >= size || x2 >= size || y2 >= size) {
                         throw new InvalidFileFormatException("TreeTent Factory: line location out of bounds");
                     }
 
