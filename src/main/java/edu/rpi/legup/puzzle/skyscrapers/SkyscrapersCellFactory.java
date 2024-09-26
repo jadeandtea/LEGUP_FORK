@@ -22,8 +22,7 @@ public class SkyscrapersCellFactory extends ElementFactory {
     public PuzzleElement importCell(Node node, Board board) throws InvalidFileFormatException {
         try {
             if (!node.getNodeName().equalsIgnoreCase("cell")) {
-                throw new InvalidFileFormatException(
-                        "Skyscrapers Factory: unknown puzzleElement puzzleElement");
+                throw new InvalidFileFormatException("Skyscrapers Factory: unknown puzzleElement puzzleElement");
             }
 
             SkyscrapersBoard skyscrapersBoard = (SkyscrapersBoard) board;
@@ -34,8 +33,7 @@ public class SkyscrapersCellFactory extends ElementFactory {
             int x = Integer.valueOf(attributeList.getNamedItem("x").getNodeValue());
             int y = Integer.valueOf(attributeList.getNamedItem("y").getNodeValue());
             if (x >= size || y >= size) {
-                throw new InvalidFileFormatException(
-                        "Skyscrapers Factory: cell location out of bounds");
+                throw new InvalidFileFormatException("Skyscrapers Factory: cell location out of bounds");
             }
             if (value < 0 || value > size) {
                 throw new InvalidFileFormatException("Skyscrapers Factory: cell unknown value");
@@ -45,12 +43,12 @@ public class SkyscrapersCellFactory extends ElementFactory {
             cell.setIndex(y * size + x);
 
             return cell;
-        } catch (NumberFormatException e) {
-            throw new InvalidFileFormatException(
-                    "Skyscrapers Factory: unknown value where integer expected");
-        } catch (NullPointerException e) {
-            throw new InvalidFileFormatException(
-                    "Skyscrapers Factory: could not find attribute(s)");
+        }
+        catch (NumberFormatException e) {
+            throw new InvalidFileFormatException("Skyscrapers Factory: unknown value where integer expected");
+        }
+        catch (NullPointerException e) {
+            throw new InvalidFileFormatException("Skyscrapers Factory: could not find attribute(s)");
         }
     }
 

@@ -20,7 +20,11 @@ public class SkyscrapersController extends ElementController {
             } else {
                 cell.setData(SkyscrapersType.UNKNOWN.toValue());
             }
-        } else {
+            else {
+                cell.setData(SkyscrapersType.UNKNOWN.toValue());
+            }
+        }
+        else {
             if (e.getButton() == MouseEvent.BUTTON3) {
                 if (cell.getData() > 0) {
                     int num = cell.getData() - 1;

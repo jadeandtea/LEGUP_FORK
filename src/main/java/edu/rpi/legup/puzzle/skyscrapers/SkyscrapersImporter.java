@@ -31,15 +31,12 @@ public class SkyscrapersImporter extends PuzzleImporter {
      */
     @Override
     public void initializeBoard(int rows, int columns) {
-        // assert(rows == columns);
         int size = rows;
         SkyscrapersBoard skyscrapersBoard = new SkyscrapersBoard(size);
 
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                SkyscrapersCell cell =
-                        new SkyscrapersCell(
-                                SkyscrapersType.UNKNOWN.toValue(), new Point(x, y), size);
+                SkyscrapersCell cell = new SkyscrapersCell(SkyscrapersType.UNKNOWN.toValue(), new Point(x, y), size);
                 cell.setIndex(y * size + x);
                 cell.setModifiable(true);
                 skyscrapersBoard.setCell(x, y, cell);
@@ -47,23 +44,14 @@ public class SkyscrapersImporter extends PuzzleImporter {
         }
 
         for (int i = 0; i < size; i++) {
-            skyscrapersBoard
-                    .getWestClues()
-                    .set(/*index - 1*/ i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_WEST));
-            skyscrapersBoard
-                    .getEastClues()
-                    .set(/*index - 1*/ i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_EAST));
+            skyscrapersBoard.getWestClues().set(/*index - 1*/i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_WEST));
+            skyscrapersBoard.getEastClues().set(/*index - 1*/i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_EAST));
         }
 
         for (int i = 0; i < size; i++) {
-            skyscrapersBoard
-                    .getNorthClues()
-                    .set(/*index - 1*/ i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_NORTH));
-            skyscrapersBoard
-                    .getSouthClues()
-                    .set(/*index - 1*/ i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_SOUTH));
+            skyscrapersBoard.getNorthClues().set(/*index - 1*/i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_NORTH));
+            skyscrapersBoard.getSouthClues().set(/*index - 1*/i, new SkyscrapersClue(0, i, SkyscrapersType.CLUE_SOUTH));
         }
-
         puzzle.setCurrentBoard(skyscrapersBoard);
     }
 
@@ -100,22 +88,6 @@ public class SkyscrapersImporter extends PuzzleImporter {
             }
             Element dataElement = (Element) boardElement.getElementsByTagName("cells").item(0);
             NodeList elementDataList = dataElement.getElementsByTagName("cell");
-
-            int size = skyscrapersBoard.getSize();
-
-            for (int i = 0; i < elementDataList.getLength(); i++) {
-                SkyscrapersCell cell =
-                        (SkyscrapersCell)
-                                puzzle.getFactory()
-                                        .importCell(elementDataList.item(i), skyscrapersBoard);
-                Point loc = cell.getLocation();
-                if (cell.getData() != 0) {
-                    cell.setModifiable(false);
-                    cell.setGiven(true);
-                }
-                skyscrapersBoard.setCell(loc.x, loc.y, cell);
-            }
-
             for (int y = 0; y < size; y++) {
                 for (int x = 0; x < size; x++) {
                     if (skyscrapersBoard.getCell(x, y) == null) {
@@ -187,27 +159,9 @@ public class SkyscrapersImporter extends PuzzleImporter {
                 int value = Integer.valueOf(clue.getAttribute("value"));
                 int index = Integer.valueOf(clue.getAttribute("index"));
 
-                skyscrapersBoard
-                        .getNorthClues()
-                        .set(
-                                /*index - 1*/ i,
-                                new SkyscrapersClue(index, i, SkyscrapersType.CLUE_NORTH));
-                skyscrapersBoard
-                        .getSouthClues()
-                        .set(
-                                /*index - 1*/ i,
-                                new SkyscrapersClue(value, i, SkyscrapersType.CLUE_SOUTH));
-            }
 
-            NodeList flagList = boardElement.getElementsByTagName("flags");
-            if (flagList.getLength() == 1) {
-                Element flags = (Element) flagList.item(0);
-                if (flags.hasAttribute("dupe")) {
-                    skyscrapersBoard.setDupeFlag(Boolean.parseBoolean(flags.getAttribute("dupe")));
-                }
-                if (flags.hasAttribute("view")) {
-                    skyscrapersBoard.setViewFlag(Boolean.parseBoolean(flags.getAttribute("view")));
-                }
+                skyscrapersBoard.getNorthClues().set(/*index - 1*/i, new SkyscrapersClue(index, i, SkyscrapersType.CLUE_NORTH));
+                skyscrapersBoard.getSouthClues().set(/*index - 1*/i, new SkyscrapersClue(value, i, SkyscrapersType.CLUE_SOUTH));
             }
 
             puzzle.setCurrentBoard(skyscrapersBoard);
