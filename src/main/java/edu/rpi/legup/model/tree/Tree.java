@@ -1,12 +1,12 @@
 package edu.rpi.legup.model.tree;
 
+import com.google.firebase.database.core.operation.Merge;
 import edu.rpi.legup.controller.TreeController;
 import edu.rpi.legup.model.gameboard.Board;
+import edu.rpi.legup.model.rules.MergeRule;
 import edu.rpi.legup.ui.proofeditorui.treeview.TreeView;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 /**
  * Represents a tree structure in a puzzle. The tree consists of {@link TreeNode}s and {@link
@@ -96,18 +96,54 @@ public class Tree {
     public void removeTreeElement(TreeElement element) {
         if (element.getType() == TreeElementType.NODE) {
             TreeNode node = (TreeNode) element;
-
-            node.getParent().removeChild(node);
-            node.getParent().setChildNode(null);
+            removeTreeNode(node);
         } else {
-            TreeTransition transition = (TreeTransition) element;
+            TreeTransition trans = (TreeTransition) element;
+            removeTreeTransition(trans);
 
-            transition.getParents().forEach(n -> n.removeChild(transition));
-            TreeController treeController = new TreeController();
-            TreeView treeView = new TreeView(treeController);
-            treeView.removeTreeTransition(transition);
-            transition.getParents().get(0).getChildren().forEach(TreeTransition::reverify);
+//            trans.getParents().forEach(n -> n.removeChild(trans));
+//            TreeController treeController = new TreeController();
+//            TreeView treeView = new TreeView(treeController);
+//            treeView.removeTreeTransition(trans);
         }
+    }
+
+    public void removeTreeNode(TreeNode node) {
+//        node.getParent().removeChild(node);
+        node.getParent().setChildNode(null);
+
+        List<TreeTransition> children = node.getChildren();
+        if (children != null) {
+            Iterator<TreeTransition> childrenItr = children.iterator();
+            while (childrenItr.hasNext()) {
+                TreeTransition transition = childrenItr.next();
+                if (transition.getRule() instanceof MergeRule) {
+                    Iterator<TreeNode> iterator = transition.getParents().iterator();
+                    while (iterator.hasNext()) {
+                        TreeNode parent = iterator.next();
+                        if (parent != node) {
+                            parent.getChildren().remove(transition);
+                        }
+                    }
+                } else {
+                    removeTreeTransition(transition);
+                }
+            }
+        }
+    }
+
+    public void removeTreeTransition(TreeTransition trans) {
+        List<TreeNode> parents = trans.getParents();
+
+        trans.getParents().forEach(n -> n.removeChild(trans));
+        TreeController treeController = new TreeController();
+        TreeView treeView = new TreeView(treeController);
+        treeView.removeTreeTransition(trans);
+
+        if (trans.getChildNode() != null) {
+            removeTreeNode(trans.getChildNode());
+        }
+        parents.getFirst().getChildren().forEach(TreeTransition::reverify);
     }
 
     /**

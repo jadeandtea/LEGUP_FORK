@@ -11,6 +11,7 @@ import edu.rpi.legup.model.gameboard.Board;
 import edu.rpi.legup.model.gameboard.PuzzleElement;
 import edu.rpi.legup.model.observer.ITreeListener;
 import edu.rpi.legup.model.rules.CaseRule;
+import edu.rpi.legup.model.rules.MergeRule;
 import edu.rpi.legup.model.rules.Rule;
 import edu.rpi.legup.model.tree.Tree;
 import edu.rpi.legup.model.tree.TreeElement;
@@ -420,7 +421,6 @@ public class TreeView extends ScrollView implements ITreeListener {
                     }
                 }
             }
-
             transView.getParentViews().forEach(n -> n.removeChildrenView(transView));
             removeTreeTransition(trans);
         }
@@ -464,7 +464,7 @@ public class TreeView extends ScrollView implements ITreeListener {
     public void removeTreeNode(TreeNode node) {
         viewMap.remove(node);
         if (node.getChildren() != null) {
-            node.getChildren().forEach(t -> removeTreeTransition(t));
+            node.getChildren().forEach(this::removeTreeTransition);
         }
 
         List<TreeTransition> children = node.getChildren();
@@ -556,6 +556,11 @@ public class TreeView extends ScrollView implements ITreeListener {
                     if (ancestors.get(i).getParent().getRule() instanceof CaseRule) {
                         nextAncestorIsCaseRule = true;
                     }
+                }
+            } else if (rule instanceof MergeRule) {
+                TreeNodeView view = (TreeNodeView) viewMap.get(parent);
+                if (view != null) {
+                    view.getChildrenViews().clear();
                 }
             }
         }
@@ -671,7 +676,7 @@ public class TreeView extends ScrollView implements ITreeListener {
             dimension.height = (int) rootNodeView.getSpan();
 
             redrawTree(graphics2D, rootNodeView);
-            LOGGER.debug("DrawTree: dimensions - " + dimension.width + "x" + dimension.height);
+             LOGGER.debug("DrawTree: dimensions - " + dimension.width + "x" + dimension.height);
         }
     }
 
