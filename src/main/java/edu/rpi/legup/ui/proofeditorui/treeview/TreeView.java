@@ -676,7 +676,7 @@ public class TreeView extends ScrollView implements ITreeListener {
             dimension.height = (int) rootNodeView.getSpan();
 
             redrawTree(graphics2D, rootNodeView);
-             LOGGER.debug("DrawTree: dimensions - " + dimension.width + "x" + dimension.height);
+            LOGGER.debug("DrawTree: dimensions - " + dimension.width + "x" + dimension.height);
         }
     }
 

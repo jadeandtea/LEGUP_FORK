@@ -68,7 +68,7 @@ public class MergeCommand extends PuzzleCommand {
             transition.addParent(node);
         }
 
-//        puzzle.notifyTreeListeners(listener -> listener.onTreeElementAdded(mergedNode));
+        //        puzzle.notifyTreeListeners(listener -> listener.onTreeElementAdded(mergedNode));
         puzzle.notifyTreeListeners(listener -> listener.onTreeElementAdded(transition));
 
         final TreeViewSelection newSelection = new TreeViewSelection();

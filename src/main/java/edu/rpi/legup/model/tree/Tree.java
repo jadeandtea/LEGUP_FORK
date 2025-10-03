@@ -1,11 +1,9 @@
 package edu.rpi.legup.model.tree;
 
-import com.google.firebase.database.core.operation.Merge;
 import edu.rpi.legup.controller.TreeController;
 import edu.rpi.legup.model.gameboard.Board;
 import edu.rpi.legup.model.rules.MergeRule;
 import edu.rpi.legup.ui.proofeditorui.treeview.TreeView;
-
 import java.util.*;
 
 /**
@@ -101,15 +99,15 @@ public class Tree {
             TreeTransition trans = (TreeTransition) element;
             removeTreeTransition(trans);
 
-//            trans.getParents().forEach(n -> n.removeChild(trans));
-//            TreeController treeController = new TreeController();
-//            TreeView treeView = new TreeView(treeController);
-//            treeView.removeTreeTransition(trans);
+            //            trans.getParents().forEach(n -> n.removeChild(trans));
+            //            TreeController treeController = new TreeController();
+            //            TreeView treeView = new TreeView(treeController);
+            //            treeView.removeTreeTransition(trans);
         }
     }
 
     public void removeTreeNode(TreeNode node) {
-//        node.getParent().removeChild(node);
+        //        node.getParent().removeChild(node);
         node.getParent().setChildNode(null);
 
         List<TreeTransition> children = node.getChildren();
