@@ -11,7 +11,11 @@ version = appVersion
 
 processResources {
     // Tell Gradle which files to process
+<<<<<<< HEAD
     filesMatching(['version.properties', 'config.xml']) {
+=======
+    filesMatching('version.properties') {
+>>>>>>> 1db74fb8 (Centralize version number to single file)
         // Enable property expansion, using the 'version' property from the build script
         expand(version: project.version)
     }
